@@ -1,8 +1,14 @@
+import ResponsiveDrawer from "../components/Drawer";
+import { Typography } from '@mui/material'
+
 const Home = () => {
+  const drawerWidth = 240;
   return (
     <>
-      <h1>Hello world!</h1>
-      <h1>good boy</h1>
+      <ResponsiveDrawer />
+      <Typography variant="h3">
+        Hello World !
+      </Typography>
     </>
   )
 }
