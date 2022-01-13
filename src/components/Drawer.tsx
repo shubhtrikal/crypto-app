@@ -5,7 +5,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -176,18 +175,10 @@ export default function ResponsiveDrawer(props: Props) {
                         backgroundColor: '#11127E'
                     }}
                     open
-
                 >
                     {drawer}
                 </Drawer>
-            </Box>
-            <Box
-                component="main"
-                sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
-            >
-                <Toolbar
-                    sx={{ display: { xs: 'block', sm: 'none' }, }}
-                />
+                <Toolbar />
             </Box>
         </Box>
     );
