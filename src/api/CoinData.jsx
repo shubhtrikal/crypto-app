@@ -22,6 +22,7 @@ const options = {
 const CoinData = async () => {
   try {
     const resoponse = await axios.get(URL, options);
+    // console.log(resoponse.data);
     return resoponse.data.data.coins;
   } catch (error) {
     console.log(error);

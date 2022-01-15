@@ -1,33 +1,39 @@
 /* eslint-disable react/jsx-key */
 import React from 'react'
 import ResponsiveDrawer from "../components/Drawer";
-import { Button, Card, CardActions, CardContent, CardMedia, Grid, Typography } from '@mui/material'
-import { Box, minWidth } from "@mui/system";
+import { ButtonBase, Card, CardActions, CardContent, CardHeader, CardMedia, Grid, Typography, Avatar, Divider } from '@mui/material'
+import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import CoinData from '../api/CoinData'
 import { makeStyles, createStyles } from '@mui/styles'
-import { Theme } from '@mui/material/styles'
+import { Theme, useTheme } from '@mui/material/styles'
+import millify from 'millify';
+import { useRouter } from 'next/router';
 
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    cardImage: {
-      backgroundSize: "cover",
-      width: "50%",
-      margin: "auto",
-      height: "300",
-      marginTop: "10px"
+    cardHeader: {
+      justifyContent: 'space-around',
     },
-    card: {
-      // margin: "10px 0"
-    }
+    cardContent: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-start'
+    },
+    root: {
+      marginLeft: "240px",
+      padding: theme.spacing(1),
+      [theme.breakpoints.down('sm')]: {
+        marginLeft: "0",
+      },
+    },
   })
 )
 
 const Home = () => {
-  const drawerWidth = 240;
-  const classes = useStyles();
 
+  const classes = useStyles();
   let [coins, setCoins] = useState<any[]>([]);
 
   useEffect(() => {
@@ -36,37 +42,36 @@ const Home = () => {
         setCoins(data);
       })
   }, [])
-  console.log(coins);
+
+  const router = useRouter();
+
   return (
     <>
       <ResponsiveDrawer />
-      <Box>
+      <Box className={classes.root}>
         <Grid container spacing={{ xs: 2, md: 3 }} justifyContent='space-around'>
           {
             coins?.map((coin, i) => (
 
               <Grid item key={i}>
-                <Card sx={{ maxWidth: 300, minWidth: 250 }} elevation={6} className={classes.card}>
-                  <CardMedia className={classes.cardImage}
-                    component="img"
-                    height='150'
-                    image={coin.iconUrl}
-                    alt={coin.name}
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      Lizard
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Lizards are a widespread group of squamate reptiles, with over 6,000
-                      species, ranging across all continents except Antarctica
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small">Share</Button>
-                    <Button size="small">Learn More</Button>
-                  </CardActions>
-                </Card>
+                <ButtonBase onClick={() => router.push(`/${coin.uuid}`)}>
+                  <Card sx={{ maxWidth: 300, minWidth: 250, backgroundColor: coin.color, color: coin.color === null ? 'black' : 'white' }} elevation={6} >
+
+                    <CardHeader
+                      title={coin.name}
+                      avatar={<Avatar src={coin.iconUrl} alt="logo" sx={{ backgroundColor: 'white' }} />}
+                      className={classes.cardHeader}
+                    />
+                    <Divider />
+                    <CardContent>
+                      <Box className={classes.cardContent}>
+                        <Typography> Price: {millify(coin.price)}</Typography>
+                        <Typography> Market Cap: {millify(coin.marketCap)}</Typography>
+                        <Typography> Daily Change: {coin.change}%</Typography>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </ButtonBase>
               </Grid>
             ))
           }
